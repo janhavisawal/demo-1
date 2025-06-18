@@ -15,19 +15,17 @@ import {
 } from "lucide-react";
 import { LineChart as RechartsLineChart, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, AreaChart, Area, BarChart as RechartsBarChart, Bar, PieChart as RechartsPieChart, Cell, Pie } from "recharts";
 
-// Enhanced SINDA Assistant with Advanced Features
+// Simplified SINDA Assistant with Enhanced Features
 const SINDAAssistant = () => {
   // Core State Management
   const [currentView, setCurrentView] = useState('dashboard');
   const [currentStep, setCurrentStep] = useState('welcome');
-  const [selectedLanguage, setSelectedLanguage] = useState('english');
   const [messages, setMessages] = useState([]);
   const [inputMessage, setInputMessage] = useState('');
   const [isTyping, setIsTyping] = useState(false);
   const [messageId, setMessageId] = useState(0);
   
   // Advanced Features State
-  const [whatsappMessages, setWhatsappMessages] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const [notifications, setNotifications] = useState([]);
@@ -38,7 +36,6 @@ const SINDAAssistant = () => {
   const [darkMode, setDarkMode] = useState(false);
   const [apiConnected, setApiConnected] = useState(true);
   const [soundEnabled, setSoundEnabled] = useState(true);
-  const [autoTranslate, setAutoTranslate] = useState(false);
   const [compactMode, setCompactMode] = useState(false);
   const [highContrast, setHighContrast] = useState(false);
   const [voiceEnabled, setVoiceEnabled] = useState(false);
@@ -57,16 +54,6 @@ const SINDAAssistant = () => {
   const speechRecognition = useRef(null);
   const speechSynthesis = useRef(null);
 
-  // Enhanced WhatsApp stats with real-time updates
-  const [whatsappStats, setWhatsappStats] = useState({
-    totalMessages: 1547,
-    activeChats: 89,
-    responseRate: 97.3,
-    avgResponseTime: 1.2,
-    satisfactionScore: 4.7,
-    resolutionRate: 94.8
-  });
-
   // Comprehensive Performance Metrics
   const [performanceMetrics, setPerformanceMetrics] = useState({
     averageLoadTime: 0.8,
@@ -80,70 +67,23 @@ const SINDAAssistant = () => {
     dailyActiveUsers: 8456
   });
 
-  // Enhanced Analytics Data with Real-time Capabilities
+  // Basic Analytics Data (simplified)
   const [analyticsData] = useState({
     realTimeMetrics: {
       activeUsers: 247,
       messagesPerMinute: 18,
       responseTime: 0.8,
       resolutionRate: 96.7,
-      whatsappUsers: 156,
-      webUsers: 91,
       totalInteractions: 15432,
       successfulResolutions: 14912,
       averageSatisfaction: 4.7,
       peakHours: [9, 14, 18],
       systemLoad: 45.2,
-      emergencyRequests: 12,
-      languageDistribution: {
-        english: 67,
-        tamil: 18,
-        hindi: 10,
-        malayalam: 5
-      }
+      emergencyRequests: 12
     },
     intentAccuracy: 98.2,
     userSatisfaction: 97.5,
     totalServed: 12847,
-    
-    trendingTopics: [
-      { 
-        topic: 'STEP Tuition Registration',
-        count: 245,
-        growth: '+12%',
-        sentiment: 'positive',
-        category: 'education',
-        urgency: 'medium',
-        timeToResolve: '2.3 days'
-      },
-      { 
-        topic: 'Financial Aid Applications',
-        count: 189,
-        growth: '+24%',
-        sentiment: 'positive',
-        category: 'financial',
-        urgency: 'high',
-        timeToResolve: '1.2 days'
-      },
-      { 
-        topic: 'Youth Leadership Program',
-        count: 156,
-        growth: '+8%',
-        sentiment: 'positive',
-        category: 'youth',
-        urgency: 'low',
-        timeToResolve: '3.1 days'
-      },
-      { 
-        topic: 'Emergency Crisis Support',
-        count: 134,
-        growth: '+45%',
-        sentiment: 'urgent',
-        category: 'crisis',
-        urgency: 'critical',
-        timeToResolve: '4 hours'
-      }
-    ],
     
     monthlyEngagement: [
       { month: 'Jan', users: 820, programs: 245, assistance: 89000, satisfaction: 94.2, issues: 45, responseTime: 2.1 },
@@ -174,67 +114,10 @@ const SINDAAssistant = () => {
       repeatCustomers: 1247,
       crisisInterventions: 156,
       successStories: 2341
-    },
-    
-    geographicData: [
-      { region: 'Central', count: 3420, percentage: 28, avgIncome: 3200, programs: 12 },
-      { region: 'East', count: 2890, percentage: 24, avgIncome: 2800, programs: 8 },
-      { region: 'North', count: 2340, percentage: 19, avgIncome: 2900, programs: 7 },
-      { region: 'West', count: 2156, percentage: 18, avgIncome: 3100, programs: 9 },
-      { region: 'North-East', count: 1340, percentage: 11, avgIncome: 2700, programs: 5 }
-    ],
-    
-    satisfactionTrend: [
-      { week: 'W1', satisfaction: 94.2, resolved: 89, issues: 12, responseTime: 2.1, follow_ups: 23 },
-      { week: 'W2', satisfaction: 95.8, resolved: 92, issues: 8, responseTime: 1.8, follow_ups: 19 },
-      { week: 'W3', satisfaction: 96.1, resolved: 88, issues: 15, responseTime: 2.3, follow_ups: 31 },
-      { week: 'W4', satisfaction: 97.5, resolved: 96, issues: 6, responseTime: 1.4, follow_ups: 12 },
-      { week: 'W5', satisfaction: 96.8, resolved: 94, issues: 9, responseTime: 1.7, follow_ups: 18 },
-      { week: 'W6', satisfaction: 98.2, resolved: 97, issues: 4, responseTime: 1.1, follow_ups: 8 }
-    ]
+    }
   });
 
-  // Enhanced language support with cultural context
-  const languages = useMemo(() => ({
-    english: { 
-      name: 'English', 
-      native: 'English',
-      greeting: 'Welcome to SINDA! 🙏 I\'m here to help you discover our programs and guide you through your journey with us. How can I assist you today?',
-      flag: '🇬🇧',
-      code: 'en',
-      rtl: false,
-      culturalGreeting: 'Hello'
-    },
-    tamil: { 
-      name: 'Tamil', 
-      native: 'தமிழ்',
-      greeting: 'SINDA வில் உங்களை வரவேற்கிறோம்! 🙏 நான் உங்கள் பயணத்தில் உதவ இங்கே இருக்கிறேன். இன்று நான் எப்படி உதவ முடியும்?',
-      flag: '🇮🇳',
-      code: 'ta',
-      rtl: false,
-      culturalGreeting: 'வணக்கம்'
-    },
-    hindi: { 
-      name: 'Hindi', 
-      native: 'हिंदी',
-      greeting: 'SINDA में आपका स्वागत है! 🙏 मैं आपकी यात्रा में सहायता के लिए यहाँ हूँ। आज मैं आपकी कैसे मदद कर सकता हूँ?',
-      flag: '🇮🇳',
-      code: 'hi',
-      rtl: false,
-      culturalGreeting: 'नमस्ते'
-    },
-    malayalam: {
-      name: 'Malayalam',
-      native: 'മലയാളം',
-      greeting: 'SINDA യിലേക്ക് സ്വാഗതം! 🙏 നിങ്ങളുടെ യാത്രയിൽ സഹായിക്കാൻ ഞാനിവിടെയുണ്ട്. ഇന്ന് എങ്ങനെ സഹായിക്കാം?',
-      flag: '🇮🇳',
-      code: 'ml',
-      rtl: false,
-      culturalGreeting: 'നമസ്കാരം'
-    }
-  }), []);
-
-  // Enhanced program categories with comprehensive data
+  // Program categories with comprehensive data
   const programCategories = useMemo(() => [
     {
       id: 'education',
@@ -302,7 +185,7 @@ const SINDAAssistant = () => {
     }
   ], []);
 
-  // Enhanced quick help options with priority and personalization
+  // Quick help options with priority and personalization
   const quickHelp = useMemo(() => [
     { text: 'Apply for STEP tuition', category: 'education', priority: 'high', tags: ['popular', 'urgent'], estimatedTime: '15 min', successRate: 95 },
     { text: 'Financial assistance eligibility', category: 'family', priority: 'high', tags: ['urgent', 'assessment'], estimatedTime: '10 min', successRate: 98 },
@@ -314,7 +197,7 @@ const SINDAAssistant = () => {
     { text: 'Family counselling services', category: 'family', priority: 'medium', tags: ['mental health', 'support'], estimatedTime: '30 min', successRate: 96 }
   ], []);
 
-  // Enhanced notification system with advanced categorization
+  // Enhanced notification system
   const addNotification = useCallback((message, type = 'info', category = 'general', persistent = false, action = null) => {
     const newNotification = {
       id: Date.now() + Math.random(),
@@ -383,7 +266,7 @@ const SINDAAssistant = () => {
       speechRecognition.current = new SpeechRecognition();
       speechRecognition.current.continuous = false;
       speechRecognition.current.interimResults = false;
-      speechRecognition.current.lang = languages[selectedLanguage].code;
+      speechRecognition.current.lang = 'en-US';
       
       speechRecognition.current.onresult = (event) => {
         const transcript = event.results[0][0].transcript;
@@ -406,7 +289,7 @@ const SINDAAssistant = () => {
     if ('speechSynthesis' in window) {
       speechSynthesis.current = window.speechSynthesis;
     }
-  }, [selectedLanguage, languages, addNotification]);
+  }, [addNotification]);
 
   // Voice input handler
   const handleVoiceInput = useCallback(() => {
@@ -432,27 +315,18 @@ const SINDAAssistant = () => {
     speechSynthesis.current.cancel(); // Stop any current speech
     
     const utterance = new SpeechSynthesisUtterance(text);
-    utterance.lang = languages[selectedLanguage].code;
+    utterance.lang = 'en-US';
     utterance.rate = 0.9;
     utterance.pitch = 1;
     utterance.volume = 0.8;
     
     speechSynthesis.current.speak(utterance);
-  }, [voiceEnabled, selectedLanguage, languages]);
+  }, [voiceEnabled]);
 
   // Enhanced analytics update with performance tracking
   const updateAnalytics = useCallback(() => {
     const startTime = performance.now();
     
-    setWhatsappStats(prev => ({
-      ...prev,
-      totalMessages: prev.totalMessages + Math.floor(Math.random() * 5),
-      activeChats: Math.max(0, prev.activeChats + Math.floor(Math.random() * 3) - 1),
-      responseRate: Math.min(100, Math.max(90, prev.responseRate + (Math.random() - 0.5) * 0.1)),
-      avgResponseTime: Math.max(0.5, prev.avgResponseTime + (Math.random() - 0.5) * 0.1),
-      satisfactionScore: Math.min(5, Math.max(4, prev.satisfactionScore + (Math.random() - 0.5) * 0.1))
-    }));
-
     const endTime = performance.now();
     setPerformanceMetrics(prev => ({
       ...prev,
@@ -525,7 +399,6 @@ const SINDAAssistant = () => {
           processingTime: delay / 1000,
           followUpSuggestions: generateFollowUpSuggestions(userMessage),
           complexity: Math.min(10, Math.ceil(complexity / 100)),
-          detectedLanguage: detectLanguage(userMessage),
           urgencyLevel: assessUrgency(userMessage)
         },
         error: false
@@ -540,7 +413,7 @@ const SINDAAssistant = () => {
     }
   };
 
-  // Enhanced message handling with better state management
+  // Enhanced message handling
   const addMessage = useCallback((content, isUser = false, metadata = {}) => {
     if (!content?.trim()) return;
 
@@ -552,7 +425,6 @@ const SINDAAssistant = () => {
       metadata: {
         ...metadata,
         responseTime: isUser ? null : Math.random() * 2 + 0.5,
-        language: selectedLanguage,
         wordCount: content.trim().split(' ').length,
         characterCount: content.trim().length,
         sessionId: userSession.startTime
@@ -566,9 +438,9 @@ const SINDAAssistant = () => {
     if (!isUser && voiceEnabled && content.length < 200) {
       setTimeout(() => speakMessage(content), 500);
     }
-  }, [messageId, selectedLanguage, userSession.startTime, voiceEnabled, speakMessage]);
+  }, [messageId, userSession.startTime, voiceEnabled, speakMessage]);
 
-  // Enhanced program click handler with analytics
+  // Enhanced program click handler
   const handleProgramClick = useCallback(async (categoryTitle) => {
     if (!categoryTitle) return;
     
@@ -609,7 +481,7 @@ const SINDAAssistant = () => {
     }
   }, [addMessage, callOpenAI, messages, addNotification]);
 
-  // Enhanced message sending with comprehensive validation
+  // Enhanced message sending
   const handleSendMessage = useCallback(async () => {
     const trimmedMessage = inputMessage.trim();
     if (!trimmedMessage || isTyping) return;
@@ -653,7 +525,7 @@ const SINDAAssistant = () => {
     }
   }, [inputMessage, isTyping, addMessage, messages, callOpenAI, addNotification]);
 
-  // Utility functions for enhanced AI processing
+  // Utility functions for AI processing
   const detectCrisisKeywords = (message) => {
     const crisisKeywords = [
       'emergency', 'crisis', 'urgent', 'help', 'desperate', 'suicide', 'abuse', 
@@ -719,22 +591,6 @@ const SINDAAssistant = () => {
     if (lowerMessage.includes('community') || lowerMessage.includes('outreach')) programs.push('community');
     
     return programs;
-  };
-
-  const detectLanguage = (message) => {
-    const languageIndicators = {
-      tamil: ['tamil', 'தமிழ்', 'vanakkam'],
-      hindi: ['hindi', 'हिंदी', 'namaste'],
-      malayalam: ['malayalam', 'മലയാളം']
-    };
-    
-    const lowerMessage = message.toLowerCase();
-    for (const [lang, indicators] of Object.entries(languageIndicators)) {
-      if (indicators.some(indicator => lowerMessage.includes(indicator))) {
-        return lang;
-      }
-    }
-    return 'english';
   };
 
   const assessUrgency = (message) => {
@@ -957,7 +813,7 @@ What specific area interests you most? I'm here to guide you every step of the w
     return ['Contact information', 'Other programs', 'Success stories', 'Volunteer opportunities'];
   };
 
-  // Enhanced event handlers
+  // Event handlers
   const handleKeyPress = useCallback((e) => {
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault();
@@ -979,7 +835,7 @@ What specific area interests you most? I'm here to guide you every step of the w
   // Welcome Screen Component
   const WelcomeScreen = React.memo(() => (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-cyan-50 to-indigo-100 flex items-center justify-center p-6 relative overflow-hidden">
-      {/* Enhanced floating elements with better animations */}
+      {/* Floating elements */}
       <div className="absolute inset-0 overflow-hidden">
         <div className="absolute top-20 left-20 w-32 h-32 bg-blue-200/20 rounded-full animate-float-slow"></div>
         <div className="absolute top-60 right-32 w-24 h-24 bg-cyan-200/20 rounded-full animate-float-medium"></div>
@@ -989,7 +845,7 @@ What specific area interests you most? I'm here to guide you every step of the w
       </div>
 
       <div className="max-w-6xl w-full relative z-10 space-y-8">
-        {/* Enhanced header section */}
+        {/* Header section */}
         <div className="text-center mb-12">
           <div className="w-24 h-24 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-full mx-auto mb-8 flex items-center justify-center shadow-xl animate-glow">
             <BookOpen className="text-white animate-pulse" size={40} />
@@ -1004,7 +860,7 @@ What specific area interests you most? I'm here to guide you every step of the w
             Building stronger communities together since 1991.
           </p>
           
-          {/* Enhanced system status */}
+          {/* System status */}
           <div className="flex items-center justify-center gap-4 mb-8">
             <div className={`flex items-center gap-2 px-4 py-2 rounded-full ${apiConnected ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>
               <div className={`w-2 h-2 rounded-full ${apiConnected ? 'bg-green-500' : 'bg-red-500'} animate-pulse`}></div>
@@ -1020,7 +876,7 @@ What specific area interests you most? I'm here to guide you every step of the w
             </div>
           </div>
           
-          {/* Enhanced key stats */}
+          {/* Key stats */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-12">
             {[
               { value: '30+', label: 'Years Serving', color: 'blue', icon: Calendar },
@@ -1041,144 +897,22 @@ What specific area interests you most? I'm here to guide you every step of the w
           </div>
 
           <button
-            onClick={() => setCurrentStep('language')}
+            onClick={() => setCurrentStep('chat')}
             className="bg-gradient-to-r from-blue-500 via-cyan-500 to-indigo-600 hover:from-blue-600 hover:via-cyan-600 hover:to-indigo-700 text-white px-12 py-4 rounded-2xl font-semibold text-lg transition-all duration-300 shadow-xl hover:shadow-2xl transform hover:scale-105 flex items-center gap-3 mx-auto animate-bounce-gentle group"
           >
             Start Your Journey
             <ArrowRight size={20} className="group-hover:translate-x-2 transition-transform duration-300" />
           </button>
         </div>
-
-        {/* Enhanced real-time activity feed */}
-        <div className="bg-white/90 backdrop-blur-sm rounded-2xl p-6 border border-emerald-200 shadow-lg animate-slide-up">
-          <div className="flex items-center justify-between mb-6">
-            <h3 className="text-xl font-bold text-gray-800">Live Community Activity</h3>
-            <div className="flex items-center gap-4">
-              <button 
-                onClick={updateAnalytics}
-                className="bg-emerald-100 hover:bg-emerald-200 p-2 rounded-lg transition-all duration-300 hover:scale-110"
-                disabled={isLoading}
-              >
-                {isLoading ? <Loader size={16} className="text-emerald-600 animate-spin" /> : <RefreshCw size={16} className="text-emerald-600" />}
-              </button>
-              <span className="text-sm text-gray-600">
-                Updated {performanceMetrics.lastUpdated ? new Date(performanceMetrics.lastUpdated).toLocaleTimeString() : 'now'}
-              </span>
-            </div>
-          </div>
-          
-          <div className="space-y-4 max-h-80 overflow-y-auto">
-            {[
-              { time: '2 min ago', action: 'New STEP application approved', user: 'Priya S.', type: 'education', color: 'blue', impact: 'high' },
-              { time: '5 min ago', action: 'Emergency assistance disbursed', user: 'Raj M.', type: 'crisis', color: 'red', impact: 'critical' },
-              { time: '8 min ago', action: 'Youth leadership workshop completed', user: 'Aisha K.', type: 'youth', color: 'green', impact: 'medium' },
-              { time: '12 min ago', action: 'Family counseling session successful', user: 'Kumar F.', type: 'family', color: 'purple', impact: 'high' },
-              { time: '15 min ago', action: 'Job placement achieved', user: 'Deepa R.', type: 'career', color: 'cyan', impact: 'high' },
-              { time: '18 min ago', action: 'Community event registration', user: 'Suresh L.', type: 'community', color: 'indigo', impact: 'medium' }
-            ].map((activity, index) => (
-              <div key={index} className="flex items-center gap-4 p-3 rounded-xl bg-gray-50/80 hover:bg-blue-50/80 transition-all duration-300 animate-fade-in cursor-pointer hover:scale-105" style={{animationDelay: `${index * 0.1}s`}}>
-                <div className={`w-3 h-3 rounded-full bg-${activity.color}-500 animate-pulse`}></div>
-                <div className="flex-1">
-                  <p className="text-sm font-medium text-gray-800">{activity.action}</p>
-                  <p className="text-xs text-gray-500">{activity.user} • {activity.time}</p>
-                </div>
-                <div className="flex items-center gap-2">
-                  <div className={`px-2 py-1 rounded-full text-xs bg-${activity.color}-100 text-${activity.color}-700`}>
-                    {activity.type}
-                  </div>
-                  {activity.impact === 'critical' && <AlertTriangle size={12} className="text-red-500" />}
-                  {activity.impact === 'high' && <TrendingUp size={12} className="text-green-500" />}
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Enhanced performance insights */}
-        <div className="bg-white/90 backdrop-blur-sm rounded-2xl p-6 border border-orange-200 shadow-lg animate-slide-up">
-          <h3 className="text-xl font-bold text-gray-800 mb-6">Performance Insights</h3>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {[
-              { label: 'Success Rate', value: '94.7%', change: '↑ 5.2%', color: 'green', icon: TrendingUp },
-              { label: 'Avg Response', value: `${performanceMetrics.averageLoadTime.toFixed(1)}s`, change: '↓ 0.8s faster', color: 'blue', icon: Clock },
-              { label: 'User Satisfaction', value: `${analyticsData.realTimeMetrics.averageSatisfaction}/5`, change: '↑ 0.3 improvement', color: 'purple', icon: Star }
-            ].map((metric, index) => (
-              <div key={index} className="text-center p-4 rounded-xl bg-gradient-to-br from-gray-50 to-white hover:scale-105 transition-all duration-300">
-                <div className={`w-12 h-12 bg-${metric.color}-500 rounded-full mx-auto mb-3 flex items-center justify-center animate-bounce-gentle`}>
-                  <metric.icon className="text-white" size={20} />
-                </div>
-                <p className={`text-2xl font-bold text-${metric.color}-600`}>{metric.value}</p>
-                <p className="text-sm text-gray-600 mt-1">{metric.label}</p>
-                <p className={`text-xs text-${metric.color}-600 mt-2`}>{metric.change}</p>
-              </div>
-            ))}
-          </div>
-        </div>
       </div>
     </div>
   ));
 
-  // Enhanced Language Selection Component
-  const LanguageSelection = React.memo(() => (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-cyan-50 to-indigo-100 flex items-center justify-center p-6 relative overflow-hidden">
-      <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute top-10 left-10 w-20 h-20 bg-blue-300/10 rounded-full animate-float-slow"></div>
-        <div className="absolute bottom-20 right-20 w-32 h-32 bg-cyan-300/10 rounded-full animate-float-medium"></div>
-        <div className="absolute top-1/2 left-1/4 w-16 h-16 bg-indigo-300/10 rounded-full animate-float-fast"></div>
-      </div>
-
-      <div className="max-w-4xl w-full relative z-10">
-        <div className="text-center mb-12">
-          <button
-            onClick={() => setCurrentStep('welcome')}
-            className="mb-6 bg-white/80 hover:bg-white/90 p-3 rounded-xl border border-blue-200 transition-all duration-300 hover:scale-110"
-            aria-label="Go back to welcome screen"
-          >
-            <ArrowRight size={20} className="rotate-180 text-blue-600" />
-          </button>
-          
-          <h2 className="text-4xl font-bold text-gray-800 mb-4 animate-slide-up">Choose Your Language</h2>
-          <p className="text-lg text-gray-600 mb-12 animate-fade-in">Select your preferred language to continue with personalized support</p>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {Object.entries(languages).map(([key, lang], index) => (
-              <button
-                key={key}
-                onClick={() => {
-                  setSelectedLanguage(key);
-                  setCurrentStep('chat');
-                  setTimeout(() => addMessage(lang.greeting, false), 500);
-                  addNotification(`Language set to ${lang.name}`, 'success', 'language');
-                }}
-                className={`bg-white/80 backdrop-blur-sm border-2 hover:border-blue-500 rounded-2xl p-8 transition-all duration-500 hover:shadow-xl hover:transform hover:scale-110 group animate-slide-up ${
-                  selectedLanguage === key ? 'border-blue-500 bg-blue-50' : 'border-blue-200'
-                }`}
-                style={{animationDelay: `${index * 0.1}s`}}
-              >
-                <div className="text-4xl mb-4 animate-pulse">{lang.flag}</div>
-                <div className="text-xl font-bold text-gray-800 mb-2 group-hover:text-blue-600 transition-colors duration-300">
-                  {lang.native}
-                </div>
-                <div className="text-sm text-gray-500">{lang.name}</div>
-                <div className="text-xs text-blue-600 mt-2 font-medium">{lang.culturalGreeting}</div>
-                {selectedLanguage === key && (
-                  <div className="mt-2">
-                    <CheckCircle className="text-blue-500 mx-auto" size={20} />
-                  </div>
-                )}
-              </button>
-            ))}
-          </div>
-        </div>
-      </div>
-    </div>
-  ));
-
-  // Enhanced Chat Interface Component with advanced features
+  // Chat Interface Component
   const ChatInterface = React.memo(() => (
     <div className="max-w-6xl mx-auto p-6">
       <div className="bg-white/90 backdrop-blur-sm rounded-3xl border border-blue-200 overflow-hidden shadow-2xl animate-slide-up">
-        {/* Enhanced Chat Header */}
+        {/* Chat Header */}
         <div className="bg-gradient-to-r from-blue-500 via-cyan-500 to-indigo-600 p-6 text-white relative overflow-hidden">
           <div className="absolute inset-0 bg-gradient-to-r from-blue-400/20 to-cyan-400/20 animate-wave"></div>
           <div className="flex items-center justify-between relative z-10">
@@ -1241,7 +975,7 @@ What specific area interests you most? I'm here to guide you every step of the w
           </div>
         </div>
 
-        {/* Enhanced Search and Filter Bar */}
+        {/* Search and Filter Bar */}
         <div className="bg-gradient-to-r from-blue-50 via-cyan-50 to-indigo-50 p-4 border-b border-blue-100">
           <div className="flex gap-4 items-center">
             <div className="flex-1 relative">
@@ -1276,13 +1010,6 @@ What specific area interests you most? I'm here to guide you every step of the w
             </select>
             <div className="flex gap-2">
               <button
-                onClick={() => setDarkMode(!darkMode)}
-                className="bg-white/80 border border-blue-200 rounded-lg p-2 hover:bg-blue-50 transition-all duration-300"
-                title="Toggle theme"
-              >
-                {darkMode ? <Star size={20} /> : <Eye size={20} />}
-              </button>
-              <button
                 onClick={() => setCompactMode(!compactMode)}
                 className="bg-white/80 border border-blue-200 rounded-lg p-2 hover:bg-blue-50 transition-all duration-300"
                 title="Toggle compact mode"
@@ -1293,7 +1020,7 @@ What specific area interests you most? I'm here to guide you every step of the w
           </div>
         </div>
 
-        {/* Enhanced Program Categories Quick Access */}
+        {/* Program Categories Quick Access */}
         <div className="bg-gradient-to-r from-blue-50 via-cyan-50 to-indigo-50 p-6 border-b border-blue-100">
           <div className="flex items-center justify-between mb-4">
             <h4 className="text-lg font-semibold text-gray-800">Explore Our Programs</h4>
@@ -1322,9 +1049,6 @@ What specific area interests you most? I'm here to guide you every step of the w
                   <div className="text-xs text-green-600 mt-1 font-medium">{category.successRate}% success rate</div>
                   <div className="text-xs text-blue-600 mt-1">{category.beneficiaries.toLocaleString()} helped</div>
                   
-                  {/* Enhanced hover overlay */}
-                  <div className="absolute inset-0 bg-gradient-to-r from-blue-500/10 to-cyan-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-xl"></div>
-                  
                   {/* Priority indicator */}
                   {category.priority === 'critical' && (
                     <div className="absolute top-2 right-2 bg-red-100 text-red-600 text-xs px-2 py-1 rounded-full">
@@ -1341,20 +1065,13 @@ What specific area interests you most? I'm here to guide you every step of the w
                       ⭐ Featured
                     </div>
                   )}
-                  
-                  {/* Waiting list indicator */}
-                  {category.waitingList > 0 && (
-                    <div className="absolute bottom-2 right-2 bg-blue-100 text-blue-600 text-xs px-2 py-1 rounded-full">
-                      {category.waitingList} waiting
-                    </div>
-                  )}
                 </button>
               );
             })}
           </div>
         </div>
 
-        {/* Enhanced Messages Area */}
+        {/* Messages Area */}
         <div className={`${compactMode ? 'h-64' : 'h-96'} overflow-y-auto p-6 space-y-4 bg-gradient-to-b from-blue-50/30 to-white/50 backdrop-blur-sm`}>
           {messages.length === 0 && (
             <div className="text-center py-8 animate-fade-in">
@@ -1440,23 +1157,10 @@ What specific area interests you most? I'm here to guide you every step of the w
                         {msg.metadata.sentiment}
                       </span>
                     )}
-                    {msg.metadata?.urgencyLevel && msg.metadata.urgencyLevel !== 'normal' && (
-                      <span className={`px-2 py-1 rounded-full text-xs ${
-                        msg.metadata.urgencyLevel === 'critical' ? 'bg-red-100 text-red-700' :
-                        'bg-orange-100 text-orange-700'
-                      }`}>
-                        {msg.metadata.urgencyLevel}
-                      </span>
-                    )}
-                    {msg.metadata?.wordCount && (
-                      <span className="text-xs opacity-50">
-                        {msg.metadata.wordCount}w
-                      </span>
-                    )}
                   </div>
                 </div>
                 
-                {/* Enhanced message actions */}
+                {/* Message actions */}
                 <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex gap-1">
                   <button
                     onClick={() => {
@@ -1477,32 +1181,7 @@ What specific area interests you most? I'm here to guide you every step of the w
                       <Volume2 size={12} />
                     </button>
                   )}
-                  {!msg.isUser && (
-                    <button
-                      onClick={() => {
-                        addMessage(`Can you explain more about: "${msg.content.substring(0, 50)}..."`, true);
-                        setTimeout(() => handleSendMessage(), 100);
-                      }}
-                      className="bg-black/20 hover:bg-black/30 p-1 rounded text-white/80 hover:text-white transition-all duration-200"
-                      title="Ask for more details"
-                    >
-                      <HelpCircle size={12} />
-                    </button>
-                  )}
                 </div>
-
-                {/* Confidence indicator for AI messages */}
-                {!msg.isUser && msg.metadata?.confidence && (
-                  <div className="absolute bottom-0 left-0 right-0 h-1 bg-gray-200 rounded-b-2xl overflow-hidden">
-                    <div 
-                      className={`h-full transition-all duration-1000 ${
-                        msg.metadata.confidence > 0.8 ? 'bg-green-500' :
-                        msg.metadata.confidence > 0.6 ? 'bg-yellow-500' : 'bg-red-500'
-                      }`}
-                      style={{width: `${msg.metadata.confidence * 100}%`}}
-                    ></div>
-                  </div>
-                )}
               </div>
             </div>
           ))}
@@ -1519,11 +1198,6 @@ What specific area interests you most? I'm here to guide you every step of the w
                   <span className="text-sm text-gray-600">
                     {apiConnected ? 'SINDA Assistant is thinking...' : 'Processing offline...'}
                   </span>
-                  {!apiConnected && (
-                    <div className="text-xs text-orange-600 ml-2">
-                      (Limited functionality)
-                    </div>
-                  )}
                 </div>
               </div>
             </div>
@@ -1531,7 +1205,7 @@ What specific area interests you most? I'm here to guide you every step of the w
           <div ref={messagesEndRef} />
         </div>
 
-        {/* Enhanced Input Area */}
+        {/* Input Area */}
         <div className="p-6 bg-white/80 backdrop-blur-sm border-t border-blue-200">
           {error && (
             <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm flex items-center gap-2">
@@ -1564,7 +1238,7 @@ What specific area interests you most? I'm here to guide you every step of the w
                 </div>
               </div>
               
-              {/* Enhanced quick actions */}
+              {/* Quick actions */}
               <div className="flex gap-2 mt-2">
                 <button
                   onClick={() => setInputMessage("I need help with financial assistance")}
@@ -1619,11 +1293,10 @@ What specific area interests you most? I'm here to guide you every step of the w
             </div>
           </div>
 
-          {/* Enhanced status bar */}
+          {/* Status bar */}
           <div className="flex items-center justify-between mt-4 text-xs text-gray-500">
             <div className="flex items-center gap-4">
               <span>Messages: {messages.length}</span>
-              <span>Language: {languages[selectedLanguage].native}</span>
               <span className={`${apiConnected ? 'text-green-600' : 'text-red-600'}`}>
                 API: {apiConnected ? 'Connected' : 'Disconnected'}
               </span>
@@ -1632,7 +1305,6 @@ What specific area interests you most? I'm here to guide you every step of the w
             <div className="flex items-center gap-2">
               <span>Uptime: {performanceMetrics.uptime}%</span>
               <span>Load: {performanceMetrics.averageLoadTime.toFixed(2)}s</span>
-              <span>CPU: {performanceMetrics.cpuUsage.toFixed(1)}%</span>
             </div>
           </div>
         </div>
@@ -1640,7 +1312,7 @@ What specific area interests you most? I'm here to guide you every step of the w
     </div>
   ));
 
-  // Enhanced Settings Modal
+  // Settings Modal
   const SettingsModal = React.memo(() => {
     if (!showSettings) return null;
     
@@ -1738,20 +1410,6 @@ What specific area interests you most? I'm here to guide you every step of the w
                 </div>
               </div>
               
-              {/* Language Settings */}
-              <div>
-                <h3 className="text-lg font-semibold text-gray-700 mb-3">Language</h3>
-                <select
-                  value={selectedLanguage}
-                  onChange={(e) => setSelectedLanguage(e.target.value)}
-                  className="w-full bg-white border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                >
-                  {Object.entries(languages).map(([key, lang]) => (
-                    <option key={key} value={key}>{lang.native} ({lang.name})</option>
-                  ))}
-                </select>
-              </div>
-              
               {/* Data & Privacy */}
               <div>
                 <h3 className="text-lg font-semibold text-gray-700 mb-3">Data & Privacy</h3>
@@ -1794,7 +1452,7 @@ What specific area interests you most? I'm here to guide you every step of the w
     );
   });
 
-  // Enhanced Notification Panel
+  // Notification Panel
   const NotificationPanel = React.memo(() => {
     if (notifications.length === 0) return null;
     
@@ -1822,21 +1480,13 @@ What specific area interests you most? I'm here to guide you every step of the w
                 <X size={16} />
               </button>
             </div>
-            {notification.action && (
-              <button
-                onClick={notification.action}
-                className="mt-2 text-xs bg-current/20 px-3 py-1 rounded-full hover:bg-current/30 transition-colors duration-200"
-              >
-                Take Action
-              </button>
-            )}
           </div>
         ))}
       </div>
     );
   });
 
-  // Enhanced Analytics Dashboard (keeping existing comprehensive implementation)
+  // Basic Analytics Dashboard
   const AnalyticsDashboard = React.memo(() => (
     <div className="space-y-8 p-6">
       {/* Real-time metrics overview */}
@@ -1985,49 +1635,10 @@ What specific area interests you most? I'm here to guide you every step of the w
         </div>
       </div>
 
-      {/* Additional analytics sections */}
+      {/* Key metrics */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Geographic distribution */}
-        <div className="bg-white/90 backdrop-blur-sm rounded-2xl p-6 border border-indigo-200 shadow-lg animate-slide-up">
-          <h3 className="text-lg font-bold text-gray-800 mb-4">Geographic Reach</h3>
-          <div className="space-y-3">
-            {analyticsData.geographicData.map((region, index) => (
-              <div key={index} className="flex items-center justify-between">
-                <div>
-                  <div className="text-sm font-medium text-gray-700">{region.region}</div>
-                  <div className="text-xs text-gray-500">{region.programs} programs</div>
-                </div>
-                <div className="text-right">
-                  <div className="text-sm font-semibold text-gray-800">{region.count.toLocaleString()}</div>
-                  <div className="text-xs text-gray-500">{region.percentage}%</div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Crisis response metrics */}
-        <div className="bg-white/90 backdrop-blur-sm rounded-2xl p-6 border border-red-200 shadow-lg animate-slide-up">
-          <h3 className="text-lg font-bold text-gray-800 mb-4">Crisis Response</h3>
-          <div className="space-y-4">
-            <div className="text-center">
-              <div className="text-3xl font-bold text-red-600">{analyticsData.helpMetrics.crisisInterventions}</div>
-              <div className="text-sm text-gray-600">Interventions This Year</div>
-            </div>
-            <div className="text-center">
-              <div className="text-2xl font-bold text-orange-600">4.2h</div>
-              <div className="text-sm text-gray-600">Avg Response Time</div>
-            </div>
-            <div className="text-center">
-              <div className="text-2xl font-bold text-green-600">98.7%</div>
-              <div className="text-sm text-gray-600">Resolution Rate</div>
-            </div>
-          </div>
-        </div>
-
-        {/* Success stories */}
         <div className="bg-white/90 backdrop-blur-sm rounded-2xl p-6 border border-green-200 shadow-lg animate-slide-up">
-          <h3 className="text-lg font-bold text-gray-800 mb-4">Impact Stories</h3>
+          <h3 className="text-lg font-bold text-gray-800 mb-4">Impact Metrics</h3>
           <div className="space-y-4">
             <div className="text-center">
               <div className="text-3xl font-bold text-green-600">{analyticsData.helpMetrics.successStories}</div>
@@ -2040,6 +1651,58 @@ What specific area interests you most? I'm here to guide you every step of the w
             <div className="text-center">
               <div className="text-2xl font-bold text-purple-600">{analyticsData.helpMetrics.communityEvents}</div>
               <div className="text-sm text-gray-600">Community Events</div>
+            </div>
+          </div>
+        </div>
+
+        <div className="bg-white/90 backdrop-blur-sm rounded-2xl p-6 border border-orange-200 shadow-lg animate-slide-up">
+          <h3 className="text-lg font-bold text-gray-800 mb-4">Financial Support</h3>
+          <div className="space-y-4">
+            <div className="text-center">
+              <div className="text-2xl font-bold text-green-600">${(analyticsData.helpMetrics.financialAidDistributed / 1000000).toFixed(1)}M</div>
+              <div className="text-sm text-gray-600">Aid Distributed</div>
+            </div>
+            <div className="text-center">
+              <div className="text-2xl font-bold text-blue-600">{analyticsData.helpMetrics.scholarshipsAwarded}</div>
+              <div className="text-sm text-gray-600">Scholarships Awarded</div>
+            </div>
+            <div className="text-center">
+              <div className="text-2xl font-bold text-orange-600">{analyticsData.helpMetrics.emergencySupport}</div>
+              <div className="text-sm text-gray-600">Emergency Cases</div>
+            </div>
+          </div>
+        </div>
+
+        <div className="bg-white/90 backdrop-blur-sm rounded-2xl p-6 border border-purple-200 shadow-lg animate-slide-up">
+          <h3 className="text-lg font-bold text-gray-800 mb-4">System Performance</h3>
+          <div className="space-y-4">
+            <div className="flex items-center justify-between">
+              <span className="text-sm text-gray-600">CPU Usage</span>
+              <div className="flex items-center gap-2">
+                <div className="w-24 bg-gray-200 rounded-full h-2">
+                  <div 
+                    className="bg-blue-500 h-2 rounded-full transition-all duration-500" 
+                    style={{width: `${performanceMetrics.cpuUsage}%`}}
+                  ></div>
+                </div>
+                <span className="text-sm font-medium">{performanceMetrics.cpuUsage.toFixed(1)}%</span>
+              </div>
+            </div>
+            <div className="flex items-center justify-between">
+              <span className="text-sm text-gray-600">Memory</span>
+              <div className="flex items-center gap-2">
+                <div className="w-24 bg-gray-200 rounded-full h-2">
+                  <div 
+                    className="bg-green-500 h-2 rounded-full transition-all duration-500" 
+                    style={{width: `${performanceMetrics.memoryUsage}%`}}
+                  ></div>
+                </div>
+                <span className="text-sm font-medium">{performanceMetrics.memoryUsage.toFixed(1)}%</span>
+              </div>
+            </div>
+            <div className="text-center">
+              <div className="text-2xl font-bold text-purple-600">{performanceMetrics.uptime}%</div>
+              <div className="text-sm text-gray-600">Uptime</div>
             </div>
           </div>
         </div>
@@ -2088,183 +1751,21 @@ What specific area interests you most? I'm here to guide you every step of the w
         ))}
       </div>
 
-      {/* Recent activity and trending programs */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        <div className="bg-white/90 backdrop-blur-sm rounded-2xl p-6 border border-gray-200 shadow-lg animate-slide-up">
-          <h3 className="text-xl font-bold text-gray-800 mb-4">Recent Activity</h3>
-          <div className="space-y-3">
-            {analyticsData.trendingTopics.slice(0, 5).map((topic, index) => (
-              <div key={index} className="flex items-center justify-between p-3 rounded-lg bg-gray-50 hover:bg-blue-50 transition-colors duration-200">
-                <div>
-                  <div className="text-sm font-medium text-gray-800">{topic.topic}</div>
-                  <div className="text-xs text-gray-500">{topic.category} • {topic.timeToResolve}</div>
-                </div>
-                <div className="text-right">
-                  <div className="text-sm font-semibold text-gray-700">{topic.count}</div>
-                  <div className="text-xs text-green-600">{topic.growth}</div>
-                </div>
-              </div>
-            ))}
+      {/* Basic analytics */}
+      <div className="bg-white/90 backdrop-blur-sm rounded-2xl p-6 border border-gray-200 shadow-lg animate-slide-up">
+        <h3 className="text-xl font-bold text-gray-800 mb-4">System Overview</h3>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="text-center">
+            <div className="text-3xl font-bold text-blue-600">{analyticsData.totalServed.toLocaleString()}</div>
+            <div className="text-sm text-gray-600">Total Served</div>
           </div>
-        </div>
-
-        <div className="bg-white/90 backdrop-blur-sm rounded-2xl p-6 border border-gray-200 shadow-lg animate-slide-up">
-          <h3 className="text-xl font-bold text-gray-800 mb-4">System Performance</h3>
-          <div className="space-y-4">
-            <div className="flex items-center justify-between">
-              <span className="text-sm text-gray-600">CPU Usage</span>
-              <div className="flex items-center gap-2">
-                <div className="w-32 bg-gray-200 rounded-full h-2">
-                  <div 
-                    className="bg-blue-500 h-2 rounded-full transition-all duration-500" 
-                    style={{width: `${performanceMetrics.cpuUsage}%`}}
-                  ></div>
-                </div>
-                <span className="text-sm font-medium">{performanceMetrics.cpuUsage.toFixed(1)}%</span>
-              </div>
-            </div>
-            <div className="flex items-center justify-between">
-              <span className="text-sm text-gray-600">Memory Usage</span>
-              <div className="flex items-center gap-2">
-                <div className="w-32 bg-gray-200 rounded-full h-2">
-                  <div 
-                    className="bg-green-500 h-2 rounded-full transition-all duration-500" 
-                    style={{width: `${performanceMetrics.memoryUsage}%`}}
-                  ></div>
-                </div>
-                <span className="text-sm font-medium">{performanceMetrics.memoryUsage.toFixed(1)}%</span>
-              </div>
-            </div>
-            <div className="flex items-center justify-between">
-              <span className="text-sm text-gray-600">Cache Hit Rate</span>
-              <div className="flex items-center gap-2">
-                <div className="w-32 bg-gray-200 rounded-full h-2">
-                  <div 
-                    className="bg-purple-500 h-2 rounded-full transition-all duration-500" 
-                    style={{width: `${performanceMetrics.cacheHitRate}%`}}
-                  ></div>
-                </div>
-                <span className="text-sm font-medium">{performanceMetrics.cacheHitRate.toFixed(1)}%</span>
-              </div>
-            </div>
+          <div className="text-center">
+            <div className="text-3xl font-bold text-green-600">{analyticsData.userSatisfaction}%</div>
+            <div className="text-sm text-gray-600">User Satisfaction</div>
           </div>
-        </div>
-      </div>
-    </div>
-  ));
-
-  // Enhanced WhatsApp Interface Component
-  const WhatsAppInterface = React.memo(() => (
-    <div className="max-w-4xl mx-auto p-6">
-      <div className="bg-white/90 backdrop-blur-sm rounded-3xl border border-green-200 overflow-hidden shadow-2xl animate-slide-up">
-        {/* WhatsApp Header */}
-        <div className="bg-gradient-to-r from-green-500 to-emerald-600 p-6 text-white">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-4">
-              <div className="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center">
-                <Phone className="text-white" size={24} />
-              </div>
-              <div>
-                <h3 className="text-xl font-bold">SINDA WhatsApp</h3>
-                <p className="text-green-100 text-sm">24/7 Community Support</p>
-              </div>
-            </div>
-            <div className="text-right text-sm">
-              <div>Active Chats: {whatsappStats.activeChats}</div>
-              <div>Response Rate: {whatsappStats.responseRate}%</div>
-            </div>
-          </div>
-        </div>
-
-        {/* WhatsApp Stats */}
-        <div className="bg-green-50 p-4 border-b border-green-100">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            {[
-              { label: 'Total Messages', value: whatsappStats.totalMessages.toLocaleString() },
-              { label: 'Avg Response', value: `${whatsappStats.avgResponseTime}min` },
-              { label: 'Satisfaction', value: `${whatsappStats.satisfactionScore}/5` },
-              { label: 'Resolution Rate', value: `${whatsappStats.resolutionRate}%` }
-            ].map((stat, index) => (
-              <div key={index} className="text-center">
-                <div className="text-lg font-bold text-green-700">{stat.value}</div>
-                <div className="text-xs text-green-600">{stat.label}</div>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* WhatsApp Chat Simulation */}
-        <div className="h-80 overflow-y-auto p-4 bg-gray-50">
-          {whatsappMessages.length === 0 && (
-            <div className="text-center py-8 text-gray-500">
-              <Phone size={48} className="mx-auto mb-4 text-green-400" />
-              <p>WhatsApp conversation will appear here</p>
-              <p className="text-sm mt-2">Start by sending a test message below</p>
-            </div>
-          )}
-          
-          {whatsappMessages.map((msg, index) => (
-            <div key={msg.id} className={`flex mb-3 ${msg.isIncoming ? 'justify-start' : 'justify-end'}`}>
-              <div className={`max-w-xs px-4 py-2 rounded-lg ${
-                msg.isIncoming 
-                  ? 'bg-white border border-gray-200' 
-                  : 'bg-green-500 text-white'
-              }`}>
-                <p className="text-sm">{msg.content}</p>
-                <div className={`text-xs mt-1 ${msg.isIncoming ? 'text-gray-500' : 'text-green-100'}`}>
-                  {msg.timestamp}
-                  {!msg.isIncoming && (
-                    <span className="ml-2">
-                      {msg.delivered && '✓'}
-                      {msg.read && '✓'}
-                    </span>
-                  )}
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-
-        {/* WhatsApp Input */}
-        <div className="p-4 bg-white border-t border-gray-200">
-          <div className="flex gap-3">
-            <input
-              type="text"
-              placeholder="Type a WhatsApp message..."
-              className="flex-1 px-4 py-2 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-green-500"
-              onKeyPress={(e) => {
-                if (e.key === 'Enter' && e.target.value.trim()) {
-                  const message = e.target.value.trim();
-                  const newMsg = {
-                    id: Date.now(),
-                    content: message,
-                    isIncoming: true,
-                    timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-                    platform: 'whatsapp'
-                  };
-                  setWhatsappMessages(prev => [...prev, newMsg]);
-                  
-                  // Simulate AI response
-                  setTimeout(() => {
-                    const responseMsg = {
-                      id: Date.now() + 1,
-                      content: "Thank you for contacting SINDA! 🙏 I'll help you find the right support. What assistance do you need today?",
-                      isIncoming: false,
-                      timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-                      platform: 'whatsapp',
-                      delivered: true,
-                      read: false
-                    };
-                    setWhatsappMessages(prev => [...prev, responseMsg]);
-                  }, 1000);
-                  
-                  e.target.value = '';
-                }
-              }}
-            />
-            <button className="bg-green-500 text-white p-2 rounded-full hover:bg-green-600 transition-colors duration-200">
-              <Send size={20} />
-            </button>
+          <div className="text-center">
+            <div className="text-3xl font-bold text-purple-600">{analyticsData.intentAccuracy}%</div>
+            <div className="text-sm text-gray-600">Intent Accuracy</div>
           </div>
         </div>
       </div>
@@ -2273,7 +1774,7 @@ What specific area interests you most? I'm here to guide you every step of the w
 
   return (
     <div className={`min-h-screen bg-gradient-to-br from-blue-50 via-cyan-50 to-indigo-100 ${darkMode ? 'dark' : ''} ${highContrast ? 'high-contrast' : ''}`}>
-      {/* Enhanced Header with comprehensive navigation */}
+      {/* Header */}
       {currentStep === 'chat' && (
         <div className="bg-white/80 backdrop-blur-sm shadow-lg border-b border-blue-200 animate-slide-down">
           <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
@@ -2286,7 +1787,7 @@ What specific area interests you most? I'm here to guide you every step of the w
                 <div className="flex items-center gap-4 text-gray-600 text-sm">
                   <div className="flex items-center gap-1">
                     <div className={`w-2 h-2 rounded-full animate-pulse ${apiConnected ? 'bg-green-400' : 'bg-red-400'}`}></div>
-                    <span>AI-Powered Community Support • Since 1991 • {languages[selectedLanguage].native}</span>
+                    <span>AI-Powered Community Support • Since 1991</span>
                   </div>
                   {!apiConnected && (
                     <div className="flex items-center gap-1 text-orange-600">
@@ -2301,8 +1802,7 @@ What specific area interests you most? I'm here to guide you every step of the w
             <div className="flex space-x-2">
               {[
                 { key: 'dashboard', label: 'Dashboard', icon: BarChart3, color: 'purple' },
-                { key: 'chat', label: 'Web Chat', icon: MessageCircle, color: 'blue' },
-                { key: 'whatsapp', label: 'WhatsApp', icon: Phone, color: 'green' },
+                { key: 'chat', label: 'Chat', icon: MessageCircle, color: 'blue' },
                 { key: 'analytics', label: 'Analytics', icon: Activity, color: 'cyan' }
               ].map((view) => (
                 <button
@@ -2317,11 +1817,6 @@ What specific area interests you most? I'm here to guide you every step of the w
                 >
                   <view.icon size={18} />
                   {view.label}
-                  {view.key === 'whatsapp' && whatsappStats.activeChats > 0 && (
-                    <span className="bg-white/20 text-xs px-2 py-1 rounded-full">
-                      {whatsappStats.activeChats}
-                    </span>
-                  )}
                   {view.key === 'chat' && messages.length > 0 && (
                     <span className="bg-white/20 text-xs px-2 py-1 rounded-full">
                       {messages.length}
@@ -2334,7 +1829,7 @@ What specific area interests you most? I'm here to guide you every step of the w
         </div>
       )}
 
-      {/* Enhanced Main Content with error boundaries */}
+      {/* Main Content */}
       <div className="max-w-7xl mx-auto py-8">
         <Suspense fallback={
           <div className="flex items-center justify-center h-64">
@@ -2345,21 +1840,19 @@ What specific area interests you most? I'm here to guide you every step of the w
           </div>
         }>
           {currentStep === 'welcome' && <WelcomeScreen />}
-          {currentStep === 'language' && <LanguageSelection />}
           {currentStep === 'chat' && currentView === 'dashboard' && <MainDashboard />}
           {currentStep === 'chat' && currentView === 'chat' && <ChatInterface />}
-          {currentStep === 'chat' && currentView === 'whatsapp' && <WhatsAppInterface />}
           {currentStep === 'chat' && currentView === 'analytics' && <AnalyticsDashboard />}
         </Suspense>
       </div>
 
-      {/* Enhanced Analytics Overlay */}
+      {/* Analytics Overlay */}
       {showAnalytics && (
         <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 animate-fade-in">
           <div className="bg-white/90 backdrop-blur-sm border border-blue-200 rounded-3xl max-w-6xl w-full max-h-[90vh] overflow-y-auto shadow-2xl animate-slide-up">
             <div className="p-8">
               <div className="flex justify-between items-center mb-8">
-                <h2 className="text-3xl font-bold text-gray-800">Real-time Analytics Dashboard</h2>
+                <h2 className="text-3xl font-bold text-gray-800">Analytics Dashboard</h2>
                 <button 
                   onClick={() => setShowAnalytics(false)}
                   className="text-gray-400 hover:text-gray-600 p-2 rounded-xl hover:bg-blue-50 transition-all duration-300 hover:scale-110"
@@ -2373,13 +1866,13 @@ What specific area interests you most? I'm here to guide you every step of the w
         </div>
       )}
 
-      {/* Enhanced Settings Modal */}
+      {/* Settings Modal */}
       <SettingsModal />
 
-      {/* Enhanced Notification Panel */}
+      {/* Notification Panel */}
       <NotificationPanel />
 
-      {/* Enhanced Footer with comprehensive system information */}
+      {/* Footer */}
       {currentStep === 'chat' && (
         <div className="bg-white/80 backdrop-blur-sm border-t border-blue-200 mt-12 animate-slide-up">
           <div className="max-w-7xl mx-auto flex justify-between items-center text-sm py-6 px-6">
@@ -2410,16 +1903,12 @@ What specific area interests you most? I'm here to guide you every step of the w
                 <div>Uptime: {performanceMetrics.uptime}%</div>
                 <div>Load: {performanceMetrics.averageLoadTime.toFixed(2)}s</div>
               </div>
-              <div className="text-xs">
-                <div>Session: {Math.floor((Date.now() - userSession.startTime) / 60000)}min</div>
-                <div>Messages: {userSession.messageCount}</div>
-              </div>
             </div>
           </div>
         </div>
       )}
 
-      {/* Enhanced styling with comprehensive CSS animations and effects */}
+      {/* Enhanced styling with CSS animations */}
       <style jsx>{`
         @keyframes bounce {
           0%, 80%, 100% { 
@@ -2607,7 +2096,7 @@ What specific area interests you most? I'm here to guide you every step of the w
           background: linear-gradient(to bottom, #2563eb, #1e40af);
         }
 
-        /* Smooth transitions with performance optimization */
+        /* Smooth transitions */
         * {
           transition: all 0.3s ease;
           will-change: auto;
@@ -2635,7 +2124,7 @@ What specific area interests you most? I'm here to guide you every step of the w
           -webkit-text-fill-color: transparent;
         }
 
-        /* Enhanced hover effects with performance optimization */
+        /* Enhanced hover effects */
         .hover\\:scale-105:hover {
           transform: scale(1.05);
           will-change: transform;
@@ -2672,12 +2161,7 @@ What specific area interests you most? I'm here to guide you every step of the w
           border: 2px solid currentColor;
         }
 
-        /* Performance optimizations */
-        .animate-spin {
-          will-change: transform;
-        }
-
-        /* Enhanced accessibility */
+        /* Accessibility */
         @media (prefers-reduced-motion: reduce) {
           *,
           *::before,
@@ -2686,310 +2170,6 @@ What specific area interests you most? I'm here to guide you every step of the w
             animation-iteration-count: 1 !important;
             transition-duration: 0.01ms !important;
           }
-        }
-
-        /* Print optimizations */
-        @media print {
-          .no-print {
-            display: none !important;
-          }
-          
-          .print-only {
-            display: block !important;
-          }
-          
-          * {
-            background: white !important;
-            color: black !important;
-            box-shadow: none !important;
-          }
-        }
-
-        /* Mobile optimizations */
-        @media (max-width: 768px) {
-          .animate-glow {
-            animation: none;
-          }
-          
-          .hover\\:scale-105:hover,
-          .hover\\:scale-110:hover {
-            transform: none;
-          }
-        }
-
-        /* Voice input pulse animation */
-        @keyframes voice-pulse {
-          0% { transform: scale(1); }
-          50% { transform: scale(1.1); }
-          100% { transform: scale(1); }
-        }
-
-        .voice-recording {
-          animation: voice-pulse 1s ease-in-out infinite;
-        }
-
-        /* Enhanced notification animations */
-        @keyframes notification-slide {
-          from {
-            transform: translateX(100%);
-            opacity: 0;
-          }
-          to {
-            transform: translateX(0);
-            opacity: 1;
-          }
-        }
-
-        .notification-enter {
-          animation: notification-slide 0.3s ease-out;
-        }
-
-        /* Loading state animations */
-        @keyframes skeleton-loading {
-          0% { background-position: -200px 0; }
-          100% { background-position: calc(200px + 100%) 0; }
-        }
-
-        .skeleton {
-          background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
-          background-size: 200px 100%;
-          animation: skeleton-loading 1.5s infinite;
-        }
-
-        /* Enhanced glassmorphism effects */
-        .glass-effect {
-          background: rgba(255, 255, 255, 0.25);
-          backdrop-filter: blur(10px);
-          -webkit-backdrop-filter: blur(10px);
-          border: 1px solid rgba(255, 255, 255, 0.18);
-          box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
-        }
-
-        /* Custom tooltip styles */
-        .tooltip {
-          position: relative;
-        }
-
-        .tooltip::before {
-          content: attr(data-tooltip);
-          position: absolute;
-          bottom: 100%;
-          left: 50%;
-          transform: translateX(-50%);
-          background: rgba(0, 0, 0, 0.8);
-          color: white;
-          padding: 4px 8px;
-          border-radius: 4px;
-          font-size: 12px;
-          white-space: nowrap;
-          opacity: 0;
-          visibility: hidden;
-          transition: opacity 0.3s, visibility 0.3s;
-          z-index: 1000;
-        }
-
-        .tooltip:hover::before {
-          opacity: 1;
-          visibility: visible;
-        }
-
-        /* Enhanced button states */
-        .btn-primary {
-          background: linear-gradient(135deg, #3b82f6, #1d4ed8);
-          color: white;
-          border: none;
-          padding: 12px 24px;
-          border-radius: 12px;
-          font-weight: 600;
-          cursor: pointer;
-          transition: all 0.3s ease;
-          position: relative;
-          overflow: hidden;
-        }
-
-        .btn-primary::before {
-          content: '';
-          position: absolute;
-          top: 0;
-          left: -100%;
-          width: 100%;
-          height: 100%;
-          background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-          transition: left 0.5s;
-        }
-
-        .btn-primary:hover::before {
-          left: 100%;
-        }
-
-        .btn-primary:hover {
-          transform: translateY(-2px);
-          box-shadow: 0 10px 25px rgba(59, 130, 246, 0.4);
-        }
-
-        .btn-primary:active {
-          transform: translateY(0);
-        }
-
-        /* Enhanced card hover effects */
-        .card-interactive {
-          transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .card-interactive:hover {
-          transform: translateY(-8px) scale(1.02);
-          box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-        }
-
-        /* Enhanced typing indicator */
-        @keyframes typing-dot {
-          0%, 60%, 100% { transform: translateY(0); }
-          30% { transform: translateY(-10px); }
-        }
-
-        .typing-indicator .dot:nth-child(1) { animation: typing-dot 1.4s infinite; }
-        .typing-indicator .dot:nth-child(2) { animation: typing-dot 1.4s infinite 0.2s; }
-        .typing-indicator .dot:nth-child(3) { animation: typing-dot 1.4s infinite 0.4s; }
-
-        /* Enhanced progress indicators */
-        .progress-ring {
-          transition: stroke-dashoffset 0.35s;
-          transform: rotate(-90deg);
-          transform-origin: 50% 50%;
-        }
-
-        /* Enhanced modal animations */
-        .modal-backdrop {
-          backdrop-filter: blur(8px);
-          -webkit-backdrop-filter: blur(8px);
-        }
-
-        .modal-content {
-          animation: modal-appear 0.3s ease-out;
-        }
-
-        @keyframes modal-appear {
-          from {
-            opacity: 0;
-            transform: scale(0.9) translateY(-10px);
-          }
-          to {
-            opacity: 1;
-            transform: scale(1) translateY(0);
-          }
-        }
-
-        /* Enhanced responsive design */
-        @media (max-width: 640px) {
-          .mobile-stack {
-            flex-direction: column;
-          }
-          
-          .mobile-full {
-            width: 100%;
-          }
-          
-          .mobile-text-sm {
-            font-size: 0.875rem;
-          }
-        }
-
-        /* Enhanced color scheme support */
-        @media (prefers-color-scheme: dark) {
-          :root {
-            --bg-primary: #1f2937;
-            --bg-secondary: #374151;
-            --text-primary: #f9fafb;
-            --text-secondary: #d1d5db;
-          }
-        }
-
-        /* Enhanced focus indicators for better accessibility */
-        .focus-ring:focus {
-          outline: 2px solid #3b82f6;
-          outline-offset: 2px;
-          border-radius: 6px;
-        }
-
-        /* Enhanced button loading states */
-        .btn-loading {
-          position: relative;
-          color: transparent;
-        }
-
-        .btn-loading::after {
-          content: '';
-          position: absolute;
-          width: 16px;
-          height: 16px;
-          top: 50%;
-          left: 50%;
-          margin-left: -8px;
-          margin-top: -8px;
-          border: 2px solid #ffffff;
-          border-radius: 50%;
-          border-top-color: transparent;
-          animation: spin 1s linear infinite;
-        }
-
-        @keyframes spin {
-          to { transform: rotate(360deg); }
-        }
-
-        /* Enhanced error states */
-        .error-shake {
-          animation: shake 0.5s ease-in-out;
-        }
-
-        @keyframes shake {
-          0%, 100% { transform: translateX(0); }
-          25% { transform: translateX(-5px); }
-          75% { transform: translateX(5px); }
-        }
-
-        /* Enhanced success states */
-        .success-bounce {
-          animation: success-bounce 0.6s ease-out;
-        }
-
-        @keyframes success-bounce {
-          0% { transform: scale(0.3); }
-          50% { transform: scale(1.05); }
-          70% { transform: scale(0.9); }
-          100% { transform: scale(1); }
-        }
-
-        /* Enhanced micro-interactions */
-        .micro-bounce:hover {
-          animation: micro-bounce 0.3s ease-in-out;
-        }
-
-        @keyframes micro-bounce {
-          0%, 100% { transform: scale(1); }
-          50% { transform: scale(1.05); }
-        }
-
-        /* Enhanced loading skeletons */
-        .skeleton-pulse {
-          animation: skeleton-pulse 1.5s ease-in-out infinite;
-        }
-
-        @keyframes skeleton-pulse {
-          0%, 100% { opacity: 1; }
-          50% { opacity: 0.5; }
-        }
-
-        /* Enhanced gradient animations */
-        .gradient-shift {
-          background: linear-gradient(-45deg, #3b82f6, #06b6d4, #6366f1, #8b5cf6);
-          background-size: 400% 400%;
-          animation: gradient-shift 6s ease infinite;
-        }
-
-        @keyframes gradient-shift {
-          0% { background-position: 0% 50%; }
-          50% { background-position: 100% 50%; }
-          100% { background-position: 0% 50%; }
         }
       `}</style>
     </div>
